@@ -14,7 +14,8 @@ const filename = (ext) => {
 module.exports = {
   context: path.resolve(__dirname, "src"),
   mode: "development",
-  entry: "./index.js",
+  entry: ["@babel/polyfill", "./index.js"],
+  target: isDev ? "web" : "browserslist",
   output: {
     filename: filename("js"),
     path: path.resolve(__dirname, "dist"),
@@ -28,7 +29,7 @@ module.exports = {
   },
   devtool: isDev ? "source-map" : false,
   devServer: {
-    prot: 4200,
+    port: 3000,
     hot: isDev,
   },
   plugins: [
@@ -55,10 +56,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
-      },
-      {
         test: /\.m?js$/,
         exclude: /node_modules/,
         use: {
@@ -67,6 +64,14 @@ module.exports = {
             presets: ["@babel/preset-env"],
           },
         },
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          isDev ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader",
+        ],
       },
     ],
   },
