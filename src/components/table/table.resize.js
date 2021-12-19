@@ -21,7 +21,7 @@ export function resizeHandler($root, event) {
       const delta = e.pageY - coords.bottom
 
       value = coords.height + delta
-      $resizer.css({ button: -delta + "px" })
+      $resizer.css({ bottom: -delta + "px" })
     }
   }
 
